@@ -8,6 +8,11 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
+// Register routes 
+// Centralized route setup
+const setupRoutes = require('./setupRoutes');
+setupRoutes(app);
+
 app.get("/", (req, res) => {
   res.send("Backend is running...");
 });
