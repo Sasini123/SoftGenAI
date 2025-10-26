@@ -3,13 +3,10 @@ const mongoose = require('mongoose');
 
 async function connectDB(uri) {
   if (!uri) throw new Error('Missing MongoDB URI');
-  return mongoose.connect(uri, {
-    // these are defaults in modern mongoose, but safe to include
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }).then(() => {
-    console.log('Connected to MongoDB');
-  });
+  // Modern mongoose / driver enable the correct parser/topology by default.
+  // We await the connection so callers can start the server after DB is ready.
+  await mongoose.connect(uri);
+  console.log('Connected to MongoDB');
 }
 
 module.exports = connectDB;
