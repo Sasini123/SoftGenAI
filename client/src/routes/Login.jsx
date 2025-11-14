@@ -1,5 +1,4 @@
 import React from "react";
-import GoogleLoginButton from "../components/GoogleLoginButton";
 import { Link } from "react-router-dom";
 import "./Auth.css";
 
@@ -9,27 +8,23 @@ const Login = () => {
       <div className="auth-card auth-card-centered">
         <div className="auth-brand-inline">
           <h1>✨ SoftGenAI</h1>
-          <p>Quick and secure Google authentication</p>
+          <p>Secure collaboration workspace</p>
         </div>
 
-        <h2 className="auth-title">Sign In with Google</h2>
-        <p className="auth-subtitle">One click to get started</p>
-        
-        <div style={{ marginTop: "32px", marginBottom: "32px" }}>
-          <GoogleLoginButton />
-        </div>
+        <h2 className="auth-title">Choose how you want to sign in</h2>
+        <p className="auth-subtitle">Use your workspace credentials to continue</p>
 
-        <div className="auth-footer">
+        <div className="auth-footer" style={{ marginTop: "32px" }}>
           <p>
-            Prefer username?{" "}
+            Ready to work together?{" "}
             <Link to="/signin" className="auth-link">
-              Sign In with Username
+              Sign In
             </Link>
           </p>
           <p>
-            Don't have an account?{" "}
+            Need an account?{" "}
             <Link to="/signup" className="auth-link">
-              Sign Up
+              Create one now
             </Link>
           </p>
         </div>

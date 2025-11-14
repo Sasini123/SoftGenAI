@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../firebase";
-import "./Auth.css";
+import { useAuth } from "../context/AuthContext";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +9,7 @@ const SignUp = () => {
     password: "",
   });
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { signup, loading } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -47,64 +44,23 @@ const SignUp = () => {
       return;
     }
 
-    setLoading(true);
-
     try {
-      // Create user with Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-
-      const user = userCredential.user;
-
-      // Update user profile with username
-      await updateProfile(user, {
-        displayName: formData.username,
-      });
-
-      // Store additional user data in Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
+      await signup({
         username: formData.username,
         email: formData.email,
-        createdAt: new Date().toISOString(),
+        password: formData.password,
+        displayName: formData.username,
       });
-
-      // Store user data in localStorage
-      const userData = {
-        uid: user.uid,
-        username: formData.username,
-        email: user.email,
-      };
-      localStorage.setItem("user", JSON.stringify(userData));
-      localStorage.setItem("authToken", await user.getIdToken());
-
-      console.log("Signup successful:", userData);
       navigate("/home");
     } catch (err) {
-      console.error("Signup error:", err);
-      
-      // Handle Firebase-specific errors
-      if (err.code === "auth/email-already-in-use") {
-        setError("Email is already registered. Please sign in instead.");
-      } else if (err.code === "auth/weak-password") {
-        setError("Password should be at least 6 characters.");
-      } else if (err.code === "auth/invalid-email") {
-        setError("Invalid email address.");
-      } else {
-        setError(err.message || "Signup failed. Please try again.");
-      }
-    } finally {
-      setLoading(false);
+      setError(err.message || "Signup failed. Please try again.");
     }
   };
 
   return (
-    <div className="auth-container auth-container-full">
+  <div className="auth-container auth-container-full">
       <div className="auth-card auth-card-centered">
-        <div className="auth-brand-inline">
+  <div className="auth-brand-inline">
           <h1>SoftGenAI</h1>
           <p>Create your account to get started</p>
         </div>
