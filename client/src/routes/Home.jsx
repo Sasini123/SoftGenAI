@@ -209,6 +209,20 @@ const Home = () => {
         <div className="animate-fade-in">
           {activeTab === 'workspace' && (
             <div className="space-y-8">
+              <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div>
+                  <p className="text-sm uppercase tracking-wide text-gray-500">visualize collaboration</p>
+                  <h2 className="text-2xl font-bold text-dark">Diagram your workflows with Mermaid</h2>
+                  <p className="text-gray-500">Sketch architecture, sprints, and decision flows directly inside SoftGenAI.</p>
+                </div>
+                <button
+                  onClick={() => navigate('/diagram-editor')}
+                  className="px-6 py-3 bg-linear-to-r from-secondary to-tertiary text-white rounded-xl font-semibold hover:shadow-glow transition-all"
+                >
+                  Open diagram editor
+                </button>
+              </div>
+
               <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
                   <div>

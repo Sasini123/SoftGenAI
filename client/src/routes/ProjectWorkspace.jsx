@@ -3,6 +3,7 @@ import Editor from '@monaco-editor/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { io } from 'socket.io-client';
+import MermaidChart from '../components/MermaidChart';
 import {
   fetchProjectDetail,
   addProjectMember,
@@ -407,6 +408,20 @@ const ProjectWorkspace = () => {
     role: member.role,
   }));
 
+  const collaborationDiagram = useMemo(() => {
+    const projectName = project?.name || 'Project';
+    const documentCount = documents.length;
+    const memberCount = activeMembers.length;
+    return `graph TD
+  A[${projectName}] --> B{Collaboration Hub}
+  B -->|${memberCount} members| C[Team Presence]
+  B -->|${documentCount} docs| D[Documents]
+  D --> E[Editor]
+  C --> F[Chat]
+  F --> A
+`;
+  }, [project?.name, documents.length, activeMembers.length]);
+
   const isFileDocument = selectedDocumentMeta?.type === 'file';
   const socketBadgeClass = socketStatusStyles[socketStatus] || socketStatusStyles.disconnected;
   const socketBadgeLabel = socketStatusLabel[socketStatus] || socketStatusLabel.disconnected;
@@ -705,6 +720,21 @@ const ProjectWorkspace = () => {
                 Send
               </button>
             </form>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-xl p-6 space-y-4">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div>
+              <p className="text-sm uppercase tracking-wide text-gray-500">visual snapshot</p>
+              <h2 className="text-2xl font-bold text-dark">Live collaboration diagram</h2>
+              <p className="text-gray-500">
+                This auto-generated Mermaid chart highlights how your team, chat, and documents tie together.
+              </p>
+            </div>
+          </div>
+          <div className="border border-gray-200 rounded-2xl p-4 bg-gray-50 overflow-auto">
+            <MermaidChart chart={collaborationDiagram} />
           </div>
         </div>
       </div>

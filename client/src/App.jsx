@@ -6,6 +6,7 @@ import SignIn from "./routes/SignIn";
 import Home from "./routes/Home";
 import ProjectWorkspace from "./routes/ProjectWorkspace";
 import Profile from "./routes/Profile";
+import DiagramEditor from "./routes/DiagramEditor";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -21,6 +22,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/diagram-editor"
+          element={
+            <ProtectedRoute>
+              <DiagramEditor />
             </ProtectedRoute>
           }
         />
